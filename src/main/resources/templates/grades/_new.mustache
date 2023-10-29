@@ -1,0 +1,62 @@
+<div class="card m-2" id="grade-new">
+   <div class="card-body">
+       <!-- 댓글 작성 폼 -->
+       <form>
+           <!-- 닉네임 입력 -->
+           <div class="mb-3">
+               <label class="form-label">선수이름</label>
+               <input type="text" class="form-control form-control-sm" id="new-grade-playername">
+           </div>
+           <!-- 평점 입력 -->
+           <div class="mb-3">
+               <label class="form-label">평점</label>
+               <input type="text" class="form-control form-control-sm" id="new-grade-grade">
+           </div>
+           <!-- 본문 입력 -->
+           <div class="mb-3">
+               <label class="form-label">내용</label>
+               <textarea type="text" class="form-control form-control-sm" rows="3" id="new-grade-body"></textarea>
+           </div>
+           <!-- 히든 인풋 -->
+           {{#player}}
+               <input type="hidden" id="new-grade-player-id" value="{{id}}">
+           {{/player}}
+           <button type="button" class="btn btn-outline-primary btn-sm" id="grade-create-btn">댓글 작성</button>
+       </form>
+   </div>
+</div>
+
+<script>
+    {
+        //댓글 생성 버튼을 변수화(id가 grade-~~ 인 대상)
+        const gradeCreateBtn= document.querySelector("#grade-create-btn")
+        //버튼 클릭 이벤트 감지
+
+        gradeCreateBtn.addEventListener("click",function () {
+            //새 댓글 객체 생성
+            const grade = {
+                playerName : document.querySelector("#new-grade-playername").value,
+                grade : document.querySelector("#new-grade-grade").value,
+                body : document.querySelector("#new-grade-body").value,
+                playerId : document.querySelector("#new-grade-player-id").value
+            }
+            console.log(grade);
+
+            // fetch() = Talend API 요청을 JS로 보내준다.
+            const url = "/api/players/" + grade.playerId + "/grade";
+            fetch(url,{
+                method:"post", // post 요청
+                body: JSON.stringify(grade), //grade JS객체를 JSON으로 변경하여 보냄
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                const msg = (response.ok) ? "댓글이 등록되었습니다.": "댓글 등록 실패 ";
+                alert(msg);
+
+                // 현재 페이지 새로고침
+                window.location.reload();
+            });
+        });
+    }
+</script>

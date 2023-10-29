@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <link rel="stylesheet" type="text/css" href="css/album.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>경기일정</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/album/">
+
+    <style>
+        img {
+            margin: auto;
+            width:150px;
+            height:150px;
+        }
+
+    </style>
+
+    <!-- Bootstrap core CSS -->
+<link href="" rel="stylesheet">
+
+  </head>
+  <body>
+    
+<header>
+ <nav class="navbar navbar-light" style="background-color: #3CB4FF;">
+      <div class="container-fluid justify-content-center">
+
+        <a class="navbar-brand" href="#" style="color: white; ">경기 일정</a>
+        <div class="container-fluid justify-content-end">
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+            <a href = "scnu/sidebar.html">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample01"
+              aria-controls="navbarsExample01" aria-expanded="true" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            </a>
+          </form>
+        </div>
+      </div>
+    </nav>
+</header>
+<main>
+{{#playerList}}
+
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-1 g-1">
+        <div class="col">
+          <div class="card shadow-sm">
+     <!--       <svg class="bd-placeholder-img card-img-top"
+                 width="50%" height="300" xmlns="http://www.w3.org/2000/svg" role="img"
+                 aria-label="Placeholder:
+            Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#55595c"/>
+                <text x="50%" y="50%" fill="#eceeef" dy=".3em">사진없음</text>
+            </svg>-->
+              <img src="{{filepath}}">
+
+            <div class="card-body">
+              <p class="card-text" style="text-align: center">{{schedule}}
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a href="/player/{{id}}" class="btn btn-primary">View</a>
+                    <a href="/player/{{id}}/delete" class="btn btn-danger">삭제</a>
+                </div>
+                  <small class="text-muted">작성번호:{{id}}
+                  <br> 작성일:{{createDate}} </small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+    <script src=""></script>
+  </body>
+	<div style="position: fixed; bottom: 5px; right: 5px;">
+        <a href="/player/new" class="btn btn-primary">글쓰기</a>
+	<a href="#" class="btn btn-danger">위로가기</a>
+    </div>
+{{/playerList}}
+

@@ -1,0 +1,54 @@
+{{>layouts/header}}
+{{#player}}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
+        .text-box h1 {
+            font-family: 'Staatliches', cursive;
+        }
+        .text-box h4 {
+            font-family: 'Staatliches', cursive;
+        }
+    </style>
+    <table style="margin: auto">
+        <th><img src="{{filepath}}"></th>
+      <tbody>
+      </tbody>
+    </table>
+    <br>
+    <br>
+
+<table class="table table-borderless">
+    <thead>
+    <tr>
+        <th scope="row" style="text-align: center">
+            <span class="badge text-bg-info p-3">
+                LEAGUE
+            </span></th>
+        <th scope="row" style="text-align: center">
+            <span class="badge text-bg-info p-3">
+                Schedul
+            </span></th>
+        <th scope="row" style="text-align: center">
+            <span class="badge text-bg-info p-3">
+                content
+            </span></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="text-box">
+        <td style="text-align: center;"><h4>{{league}}</h4></td>
+        <td style="text-align: center"><h4>{{schedule}}</h4></td>
+        <td style="text-align: center"><h4>{{content}}</h4></td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<a href="/player/{{id}}/edit" class="btn btn-primary">수정</a>
+<a href="/player/{{id}}/delete" class="btn btn-danger">삭제</a>
+<a href="/players" class="btn btn-primary">목록</a>
+{{/player}}
+
+{{>grades/_grade}}

@@ -1,0 +1,24 @@
+{{>layouts/header}}
+{{#playerList}}
+<table class="table table-success table-striped">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">LEAGUE</th>
+        <th scope="col">SCHEDULE</th>
+        <th scope="col">CONTENT</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>{{id}}</th>
+        <td><a href="/player/{{id}}">{{league}}</td></a>
+        <td>{{schedule}}</td>
+        <td>{{content}}</td>
+    </tr>
+{{/playerList}}
+    </tbody>
+</table>
+<a href="/player/new" class="btn btn-primary">작성하기</a>
+
+

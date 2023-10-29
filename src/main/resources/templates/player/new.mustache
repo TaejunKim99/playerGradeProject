@@ -1,0 +1,83 @@
+{{>layouts/header}}
+<style>
+    body {
+        min-height: 100vh;
+
+        background: -webkit-gradient(linear, left bottom, right top, from(#92b5db), to(#1d466c));
+        background: -webkit-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
+        background: -moz-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
+        background: -o-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
+        background: linear-gradient(to top right, #92b5db 0%, #1d466c 100%);
+    }
+
+</style>                    <!-- enctype="multipart/form-data" = 파일 업로드를 위한 데이터전송 -->
+<form class="container" action="/player/create" method="post"enctype="multipart/form-data">
+<!--action = 어디에 보낼 것인지 method는 어떻게 보낼 것인지 -->
+    <br>
+    <div class="mb-2">
+        <label class="form-label" style="color: aquamarine" >리그</label>
+        <!-- name 속성과 dto패키지 PlayerForm과 일치하게 해야함.
+        <input type="text" class="form-control" name="league">-->
+        <select class="form-select"aria-label="Default select example"name="league">
+            <option selected>리그</option>
+            <option>EPL</option>
+            <option>La LIGA</option>
+            <option>Serie A</option>
+            <option>Ligue 1</option>
+            <option>Bundesliga</option>
+        </select>
+    </div>
+    <div class="mb-2">
+        <label class="form-label" style="color: aquamarine">경기일정</label>
+        <input type="text" class="form-control" name="schedule">
+    </div>
+    <div class="mb-3">
+        <label class="form-label"style="color: aquamarine" >경기내용</label>
+        <textarea class="form-control" rows="10" name="content"></textarea>
+    </div>
+    <!--파일 업로드  -->
+    <div class="container">
+    <div class="input-group mb-3">
+        <input type="file" class="form-control" id="inputGroupFile01" name = file>
+        <label class="input-group-text" for="inputGroupFile01">Upload</label>
+        <div class="frame">
+         </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<script>
+    //이미지 미리보기
+    window.addEventListener('load', function() {
+
+        const container = document.querySelector('.container');
+        const frame = container.querySelector('.frame');
+        const fileInput = container.querySelector('input[type="file"]');
+
+        fileInput.addEventListener('input', () => {
+
+            if(!isImage(fileInput.files[0])) {
+                alert('Image 파일만 업로드 할 수 있습니다.');
+                return location.reload();
+            }
+            const reader = new FileReader();
+            reader.addEventListener('load', () => {
+
+                const img = document.createElement('IMG');
+                img.classList.add('thumbnail');
+                img.src = reader.result;
+
+                frame.insertAdjacentElement('beforeend', img);
+            });
+
+            reader.readAsDataURL(fileInput.files[0]);
+        });
+
+        function isImage(file){
+            return file.type.indexOf('image') >= 0;
+        }
+        //추가
+
+    });
+</script>

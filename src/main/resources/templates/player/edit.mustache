@@ -1,0 +1,45 @@
+{{>layouts/header}}
+{{#player}}
+<style>
+    body {
+        min-height: 100vh;
+
+        background: -webkit-gradient(linear, left bottom, right top, from(#92b5db), to(#1d466c));
+        background: -webkit-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
+        background: -moz-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
+        background: -o-linear-gradient(bottom left, #92b5db 0%, #1d466c 100%);
+        background: linear-gradient(to top right, #92b5db 0%, #1d466c 100%);
+    }
+
+</style>
+<form class="container" action="/player/update" method="post" >
+    <!--action = 어디에 보낼 것인지 method는 어떻게 보낼 것인지 -->
+    <input name="id" type="hidden" value="{{id}}"/>
+    <!-- id값을 숨겨서 보낸다 -->
+    <br>
+
+    <div class="mb-2">
+        <label class="form-label" style="color: aquamarine" >리그</label>
+        <!-- name 속성과 dto패키지 PlayerForm과 일치하게 해야함.
+        <input type="text" class="form-control" name="league">-->
+        <select class="form-select"aria-label="Default select example" name="league">
+            <option selected>리그</option>
+            <option>EPL</option>
+            <option>La LIGA</option>
+            <option>Serie A</option>
+            <option>Ligue 1</option>
+            <option>Bundesliga</option>
+        </select>
+    </div>
+    <div class="mb-2">
+        <label class="form-label" style="color: aquamarine" >경기일정</label>
+        <input type="text" class="form-control" name="schedule" value="{{schedule}}">
+    </div>
+    <div class="mb-3">
+        <label class="form-label"style="color: aquamarine" >경기내용</label>
+        <textarea class="form-control" rows="10" name="content">{{content}}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a href="/player/{{id}}" class="btn btn-primary">뒤로가기</a>
+</form>
+{{/player}}

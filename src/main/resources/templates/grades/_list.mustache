@@ -1,0 +1,168 @@
+<div id="grades-list">
+    {{#gradeDtos}}
+        <div class="card m-2" id="grades-{{id}}">
+            <div class="card-header">
+                {{playerName}}
+                {{grade}}
+                <!-- Button trigger modal -->
+                <button type="button"
+                        class="btn btn-sm btn btn-outline-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#grade-edit-modal"
+                        data-bs-id="{{id}}"
+                        data-bs-playerName="{{playerName}}"
+                        data-bs-grade="{{grade}}"
+                        data-bs-body="{{body}}"
+                        data-bs-playerid="{{playerId}}">수정
+                </button>
+                <button type="button"
+                        class="btn btn-sm btn-outline-danger"
+                        id="grade-delete-btn"
+                        data-grade-id="{{id}}"
+                >삭제</button>
+
+            </div>
+            <div class="card-body">
+                {{body}}
+            </div>
+        </div>
+    {{/gradeDtos}}
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="grade-edit-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">평점 수정</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <!-- 닉네임 수정 -->
+                    <div class="mb-3">
+                        <label class="form-label">선수이름</label>
+                        <input type="text" class="form-control form-control-sm" id="edit-grade-playername">
+                    </div>
+                    <!-- 평점 입력 -->
+                    <div class="mb-3">
+                        <label class="form-label">평점</label>
+                        <input type="text" class="form-control form-control-sm" id="edit-grade-grade">
+                    </div>
+                    <!-- 본문 입력 -->
+                    <div class="mb-3">
+                        <label class="form-label">내용</label>
+                        <textarea type="text" class="form-control form-control-sm" rows="3" id="edit-grade-body"></textarea>
+                    </div>
+                    <!-- 히든 인풋 -->
+                    {{#player}}
+                        <input type="hidden" id="edit-player-id">
+                        <input type="hidden" id="edit-grade-player-id">
+                    {{/player}}
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="grade-update-btn">수정</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 모달 이벤트 처리 -->
+<script>
+    {
+        // 모달 요소 선택
+        const gradeEditModal= document.querySelector("#grade-edit-modal")
+        // 모달 이벤트 감지
+        gradeEditModal.addEventListener("show.bs.modal",function (event) {
+            //트리거 버튼 선택
+            const triggerBtn = event.relatedTarget;
+            //데이터 가져오기
+            const id = triggerBtn.getAttribute("data-bs-id");
+            const playername = triggerBtn.getAttribute("data-bs-playerName");
+            const grade = triggerBtn.getAttribute("data-bs-grade");
+            const body = triggerBtn.getAttribute("data-bs-body");
+            const playerId = triggerBtn.getAttribute("data-bs-playerid");
+
+            //데이터를 반영
+            document.querySelector("#edit-grade-playername").value = playername;
+            document.querySelector("#edit-grade-grade").value = grade;
+            document.querySelector("#edit-grade-body").value = body;
+            document.querySelector("#edit-player-id").value = playerId;
+            document.querySelector("#edit-grade-player-id").value = id;
+        });
+    }
+
+    {
+        //수정 완료 버튼
+        const gradeUpdateBtn = document.querySelector("#grade-update-btn");
+
+        //클릭 이벤트 감지 및 처리
+        gradeUpdateBtn.addEventListener("click",function () {
+            // 수정 댓글 객체를 생성
+            const grades = {
+                id : document.querySelector("#edit-grade-player-id").value,
+                playerName : document.querySelector("#edit-grade-playername").value,
+                grade : document.querySelector("#edit-grade-grade").value,
+                body : document.querySelector("#edit-grade-body").value,
+                playerId : document.querySelector("#edit-player-id").value
+            }
+            console.log(grades);
+
+            // 수정 REST API를 호출 - fetch()
+            const url = "/api/grades/" + grades.id;
+            fetch(url,{
+                method: "PATCH",
+                body : JSON.stringify(grades), // 수정된 평점을 JSON으로 전달
+                headers: {
+                    "Content-Type" : "application/json"
+                }
+            }).then(response => {
+                const msg = (response.ok) ? "댓글이 수정되었습니다.": "댓글 수정 실패 ";
+                alert(msg);
+
+                // 현재 페이지 새로고침
+                window.location.reload();
+            });
+        })
+    }
+
+</script>
+
+<!-- 댓글 삭제 -->
+
+<script>
+    {
+        //삭제 버튼 선택
+      const gradeDeleteBtns = document.querySelectorAll("#grade-delete-btn");
+      // 삭제 버튼 이벤트를 처리
+
+        gradeDeleteBtns.forEach(btn => {
+            btn.addEventListener("click",function (event) {
+                // 이벤트 발생 요소를 선택
+                const gradeDeleteBtn = event.target;
+
+                // 삭제 댓글 id 가져오기
+                const gradeId = gradeDeleteBtn.getAttribute("data-grade-id");
+
+                // 삭제 API 호출 및 처리
+                const url = `/api/grades/${gradeId}`;
+                fetch(url,{
+                    method : "DELETE"
+                }).then(response => {
+                    // 댓글 삭제 실패 처리
+                    if(!response.ok){
+                        alert("댓글 삭제 실패");
+                        return;
+                    }
+                    // 댓글 삭제 성공 처리
+                    const target = document.querySelector(`#grades-${gradeId}`);
+                    target.remove();
+                    alert("댓글 삭제 완료");
+                    window.location.reload();
+                });
+
+
+            })
+        });
+    }
+</script>
